@@ -1,6 +1,6 @@
 # Tk Utilities.
 
-*Tk Utilities* is a single module that contains several classes, utility functions and helpers to develop interfaces in *Tkinter*.
+*Tk Utilities* is a repository that hosts helper classes for the design and implementation of graphical interfaces with *Tkinter*.
 
 <img src="https://img.shields.io/badge/Python-3.5-blue" />
 
