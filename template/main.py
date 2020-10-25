@@ -2,6 +2,7 @@
 import os
 import tkinter as tk
 import tkinter.ttk as ttk
+from tkinter import filedialog
 from views.toolbar import ToolBar
 from views.statusbar import StatusBar
 from views.screen import Screen
@@ -35,12 +36,15 @@ class Main(tk.Tk):
                                             screen_x_center, screen_y_center))
         self.resizable(True, True)
 
-        appicon = tk.PhotoImage(file=self.__IMG_PATH+"logo_24x24.png")
+        appicon = tk.PhotoImage(file=self.__IMG_PATH+"python24x24.png")
         self.iconphoto(False, appicon)
         self.option_add("*font", "TkDefaultFont 13 normal")
 
         self.chrono = Chronometer()
+
+        # +------------- YOUR CONFIG HERE -----------+
         self.config = dict(var_op1="< select >", var_op2="5", var_op3="data")
+        # +------------------------------------------+
 
         self.create_vars()
         self.create_widgets()
@@ -56,6 +60,8 @@ class Main(tk.Tk):
         self.screen    = Screen(self)
         self.statusbar = StatusBar(self)
         self.statusbar.text("Stop running.")
+        self.toolbar.btn_stop.config(state="disabled")
+        self.toolbar.btn_save.config(state="disabled")
 
     def create_binding(self):
         self.bind("<Control-c>", self.click_config)
@@ -67,10 +73,11 @@ class Main(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", self.click_exit)
 
         self.toolbar.btn_conf.config(command=self.click_config)
-        self.toolbar.btn_run.bind("<Button-1>",  self.click_run)
-        self.toolbar.btn_stop.bind("<Button-1>", self.click_stop)
+        self.toolbar.btn_run.config(command=self.click_run)
+        self.toolbar.btn_stop.config(command=self.click_stop)
+        self.toolbar.btn_save.config(command=self.click_save)
         self.toolbar.btn_help.config(command=self.click_help)
-        self.toolbar.btn_exit.bind("<Button-1>", self.click_exit)
+        self.toolbar.btn_exit.config(command=self.click_exit)
 
     def create_packing(self):
         self.toolbar.pack(side=tk.TOP, fill=tk.X)
@@ -87,6 +94,7 @@ class Main(tk.Tk):
         self.toolbar.btn_conf.config(state="disabled")
         self.toolbar.btn_run.config(state="disabled")
         self.toolbar.btn_stop.config(state="normal")
+        self.toolbar.btn_save.config(state="disabled")
 
         self.bind("<Control-s>", self.click_stop)
         self.bind("<Control-S>", self.click_stop)
@@ -107,11 +115,11 @@ class Main(tk.Tk):
 
         return "break"
 
-    # Use self.config
+    # USE self.config
     def __run_code(self):
     # +------------- YOUR CODE HERE -------------+
         import code
-        code.run(self.screen.print)
+        code.run(echo=self.screen.print, **self.config)
     # +------------------------------------------+
         self.__post_run_update()
 
@@ -125,6 +133,7 @@ class Main(tk.Tk):
         self.toolbar.btn_conf.config(state="normal")
         self.toolbar.btn_run.config(state="normal")
         self.toolbar.btn_stop.config(state="disabled")
+        self.toolbar.btn_save.config(state="normal")
         self.statusbar.text("Stop running: {}".format(self.chrono.time))
 
         self.unbind("<Control-s>")
@@ -133,6 +142,8 @@ class Main(tk.Tk):
         self.bind("<Control-C>", self.click_config)
         self.bind("<Control-r>", self.click_run)
         self.bind("<Control-R>", self.click_run)
+        self.bind("<Control-a>", self.click_save)
+        self.bind("<Control-A>", self.click_save)
 
     def click_stop(self, event=None):
         self.__stoped = True
@@ -146,6 +157,7 @@ class Main(tk.Tk):
         self.toolbar.btn_conf.config(state="normal")
         self.toolbar.btn_run.config(state="normal")
         self.toolbar.btn_stop.config(state="disabled")
+        self.toolbar.btn_save.config(state="normal")
         self.statusbar.text("Stop running: {}".format(self.chrono.time))
 
         self.unbind("<Control-s>")
@@ -154,7 +166,17 @@ class Main(tk.Tk):
         self.bind("<Control-C>", self.click_config)
         self.bind("<Control-r>", self.click_run)
         self.bind("<Control-R>", self.click_run)
+        self.bind("<Control-a>", self.click_save)
+        self.bind("<Control-A>", self.click_save)
 
+        return "break"
+
+    def click_save(self, event=None):
+        file = filedialog.asksaveasfilename(parent=self, title="Save Run.",
+                filetypes=[("Run Files", "*.txt")], defaultextension=".txt", 
+                initialdir="runs{}".format(os.sep))
+        if file:
+            open(file, "w").write(self.screen.get_content)
         return "break"
 
     def click_help(self, event=None):

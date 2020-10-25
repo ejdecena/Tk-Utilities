@@ -18,11 +18,15 @@ class Screen(tk.Frame):
         self.__text.delete(1.0, tk.END)
         self.__text.config(state="disabled")
 
-    def print(self, text, end="\n"):
+    def print(self, text):
         self.__text.config(state="normal")
-        self.__text.insert(tk.END, " "+text+end)
+        self.__text.insert(tk.END, " "+text+"\n")
         self.__text.config(state="disabled")
         self.__text.see(tk.END)
+
+    @property
+    def get_content(self):
+        return self.__text.get("0.0", tk.END).rstrip()
 
 
 if __name__ == "__main__":

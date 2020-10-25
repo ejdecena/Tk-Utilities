@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import time
 
-def run(echo=print):
+def run(echo=print, **kwargs):
     i = 0
     while i<10:
         i += 1

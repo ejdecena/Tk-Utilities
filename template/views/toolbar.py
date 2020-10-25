@@ -22,19 +22,21 @@ class ToolBar(tk.Frame):
         self.icon_conf = tk.PhotoImage(file=self.__IMG_PATH+"options24x24.png")
         self.icon_run  = tk.PhotoImage(file=self.__IMG_PATH+"run24x24.png")
         self.icon_stop = tk.PhotoImage(file=self.__IMG_PATH+"stop24x24.png")
+        self.icon_save = tk.PhotoImage(file=self.__IMG_PATH+"save24x24.png")
         self.icon_help = tk.PhotoImage(file=self.__IMG_PATH+"help24x24.png")
         self.icon_exit = tk.PhotoImage(file=self.__IMG_PATH+"quit24x24.png")
 
-        self.btn_conf  = tk.Button(self, image=self.icon_conf)
-        self.btn_run   = tk.Button(self, image=self.icon_run)
-        self.btn_stop  = tk.Button(self, image=self.icon_stop,
-                                                            state=tk.DISABLED)
-        self.btn_help  = tk.Button(self, image=self.icon_help)
-        self.btn_exit  = tk.Button(self, image=self.icon_exit)
+        self.btn_conf = tk.Button(self, image=self.icon_conf)
+        self.btn_run  = tk.Button(self, image=self.icon_run)
+        self.btn_stop = tk.Button(self, image=self.icon_stop)
+        self.btn_save = tk.Button(self, image=self.icon_save)
+        self.btn_help = tk.Button(self, image=self.icon_help)
+        self.btn_exit = tk.Button(self, image=self.icon_exit)
 
         CreateToolTip(self.btn_conf, "Configuration.\nCtrl + C")
         CreateToolTip(self.btn_run,  "Run Code.\nCtrl + R")
-        CreateToolTip(self.btn_stop, "Stop Running.\nCtrl + S")
+        CreateToolTip(self.btn_stop, "Stop Run.\nCtrl + S")
+        CreateToolTip(self.btn_save, "Save Run.\nCtrl + A")
         CreateToolTip(self.btn_help, "Show Help.\nF1")
         CreateToolTip(self.btn_exit, "Stop and Exit.\nEsc")
 
@@ -42,11 +44,13 @@ class ToolBar(tk.Frame):
         pass
 
     def create_packing(self):
-        self.btn_conf.pack(side=tk.LEFT, padx=(7, 3), pady=1)
-        self.btn_run.pack(side=tk.LEFT, padx=3, pady=1)
-        self.btn_stop.pack(side=tk.LEFT, padx=3, pady=1)
-        self.btn_help.pack(side=tk.LEFT, padx=3, pady=1)
-        self.btn_exit.pack(side=tk.LEFT, padx=3, pady=1)
+        opts_btn = dict(side=tk.LEFT, padx=3, pady=1)
+        self.btn_conf.pack(**opts_btn)
+        self.btn_run.pack(**opts_btn)
+        self.btn_stop.pack(**opts_btn)
+        self.btn_save.pack(**opts_btn)
+        self.btn_help.pack(**opts_btn)
+        self.btn_exit.pack(**opts_btn)
 
 
 if __name__ == "__main__":
