@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import resource
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import filedialog
@@ -40,8 +41,6 @@ class Main(tk.Tk):
         self.iconphoto(False, appicon)
         self.option_add("*font", "TkDefaultFont 13 normal")
 
-        self.chrono = Chronometer()
-
         # +------------- YOUR CONFIG HERE -----------+
         self.config = dict(var_op1="< select >", var_op2="5", var_op3="data")
         # +------------------------------------------+
@@ -59,7 +58,7 @@ class Main(tk.Tk):
         self.toolbar   = ToolBar(self)
         self.screen    = Screen(self)
         self.statusbar = StatusBar(self)
-        self.statusbar.text("Stop running.")
+        self.statusbar.text("Ready to Run.")
         self.toolbar.btn_stop.config(state="disabled")
         self.toolbar.btn_save.config(state="disabled")
 
@@ -103,6 +102,7 @@ class Main(tk.Tk):
         self.unbind("<Control-r>")
         self.unbind("<Control-R>")
 
+        self.chrono = Chronometer()
         self.chrono.init()
         self.screen.clear()
         self.__stoped = False
@@ -125,7 +125,8 @@ class Main(tk.Tk):
 
     def __update_statusbar(self):
         while not self.__stoped:
-            self.statusbar.text("Running: {}".format(self.chrono.time))
+            self.statusbar.text("Running.  Time: {}  Memory: {} KB."\
+                .format(self.chrono.time, resource.getpagesize()/1024))
 
     def __post_run_update(self):
         self.__stoped = True
@@ -134,7 +135,8 @@ class Main(tk.Tk):
         self.toolbar.btn_run.config(state="normal")
         self.toolbar.btn_stop.config(state="disabled")
         self.toolbar.btn_save.config(state="normal")
-        self.statusbar.text("Stop running: {}".format(self.chrono.time))
+        self.statusbar.text("End.  Time: {}  Memory: {} KB."\
+            .format(self.chrono.time, resource.getpagesize()/1024))
 
         self.unbind("<Control-s>")
         self.unbind("<Control-S>")
@@ -158,7 +160,8 @@ class Main(tk.Tk):
         self.toolbar.btn_run.config(state="normal")
         self.toolbar.btn_stop.config(state="disabled")
         self.toolbar.btn_save.config(state="normal")
-        self.statusbar.text("Stop running: {}".format(self.chrono.time))
+        self.statusbar.text("Stopped.  Time {}  Memory {} KB."\
+            .format(self.chrono.time, resource.getpagesize()/1024))
 
         self.unbind("<Control-s>")
         self.unbind("<Control-S>")
