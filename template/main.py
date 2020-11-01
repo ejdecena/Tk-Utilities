@@ -41,6 +41,9 @@ class Main(tk.Tk):
         self.iconphoto(False, appicon)
         self.option_add("*font", "TkDefaultFont 13 normal")
 
+        self.chrono = Chronometer()
+        self.chrono.init()
+
         # +------------- YOUR CONFIG HERE -----------+
         self.config = dict(var_op1="< select >", var_op2="5", var_op3="data")
         # +------------------------------------------+
@@ -149,7 +152,10 @@ class Main(tk.Tk):
 
     def click_stop(self, event=None):
         self.__stoped = True
-        self.chrono.stop()
+        try:
+            self.chrono.stop()
+        except AttributeError:
+            pass
         try:
             self.thr_code.kill()
             self.thr_code.join()

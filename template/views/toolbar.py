@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import os
 import tkinter as tk
-from tooltip import CreateToolTip
+from createtooltip import CreateToolTip
 
 class ToolBar(tk.Frame):
 
